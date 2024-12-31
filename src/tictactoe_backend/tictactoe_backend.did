@@ -1,3 +1,17 @@
+type Player = variant {
+    X;
+    O;
+};
+
+type Game = record {
+    board: vec opt Player;
+    current_player: Player;
+    winner: opt Player;
+    is_draw: bool;
+};
+
 service : {
-    "greet": (text) -> (text) query;
+    "create_game": () -> (Game);
+    "make_game_move": (nat64) -> (variant { Ok: Game; Err: text; });
+    "get_game": () -> (opt Game) query;
 }

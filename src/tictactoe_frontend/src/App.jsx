@@ -1,30 +1,43 @@
 import { useState } from 'react';
-import { tictactoe_backend } from 'declarations/tictactoe_backend';
+import Board from './components/Board/Board';
+import GameStatus from './components/GameStatus/GameStatus';
+import { calculateWinner, isDraw } from './utils/gameLogic';
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [isXNext, setIsXNext] = useState(true);
+  const winner = calculateWinner(board);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    tictactoe_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
+  const handleClick = (index) => {
+    if (board[index] || winner) return;
+
+    const newBoard = [...board];
+    newBoard[index] = isXNext ? 'X' : 'O';
+    setBoard(newBoard);
+    setIsXNext(!isXNext);
+  };
+
+  const resetGame = () => {
+    setBoard(Array(9).fill(null));
+    setIsXNext(true);
+  };
 
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <div className="game">
+      <h1>Tic Tac Toe</h1>
+      <GameStatus 
+        winner={winner} 
+        isXNext={isXNext} 
+        isDraw={isDraw(board)} 
+      />
+      <Board 
+        squares={board} 
+        onSquareClick={handleClick} 
+      />
+      <button className="reset-button" onClick={resetGame}>
+        Reset Game
+      </button>
+    </div>
   );
 }
 
