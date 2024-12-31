@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "tictactoe_backend": {
+      "candid": "src/tictactoe_backend/tictactoe_backend.did",
+      "package": "tictactoe_backend",
+      "type": "rust"
+    },
+    "tictactoe_frontend": {
+      "dependencies": [
+        "tictactoe_backend"
+      ],
+      "source": [
+        "src/tictactoe_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "tictactoe_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
